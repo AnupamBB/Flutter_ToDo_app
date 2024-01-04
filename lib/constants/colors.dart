@@ -12,3 +12,16 @@ List<Color> backgroundColors = [
     const Color(0xFFD4EDDA), // mint green
     const Color(0xFFFFF3CD), // pale orange
   ];
+
+  List<Color> backgroundDarkColors = [
+  const Color(0xFF333333), // Dark grey
+  const Color(0xFF444444), // Dark grey
+  const Color(0xFF555555), // Dark grey
+  const Color(0xFF666666), // Dark grey
+  const Color(0xFF777777), // Dark grey
+  const Color(0xFF888888), // dark grey
+  const Color(0xFF444444), // Dark grey
+  const Color(0xFF555555), // Dark grey
+  const Color(0xFF999999), // Dark grey
+  const Color(0xFF000000), // Black
+];

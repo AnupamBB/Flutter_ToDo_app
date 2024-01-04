@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Note> filteredNotes = [];
-  bool isDarkMode = false; // Added variable to track the mode
+  bool isDarkMode = false;
 
   @override
   void initState() {
@@ -24,9 +24,14 @@ class _HomeScreenState extends State<HomeScreen> {
     filteredNotes = sampleNotes;
   }
 
-  getRandomColor() {
+  getRandomLightColor() {
     Random random = Random();
     return backgroundColors[random.nextInt(backgroundColors.length)];
+  }
+
+  getRandomDarkColor() {
+    Random random = Random();
+    return backgroundDarkColors[random.nextInt(backgroundDarkColors.length)];
   }
 
   void onSearchTextChanged(String searchText) {
@@ -147,7 +152,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
                   child: Card(
-                    color: getRandomColor(),
+                    color: isDarkMode
+                        ? getRandomDarkColor()
+                        : getRandomLightColor(),
                     child: ListTile(
                       onTap: () async {
                         final result = await Navigator.push(
@@ -182,23 +189,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             overflow: TextOverflow.ellipsis,
                             text: TextSpan(
                               text: '${filteredNotes[index].title} ',
-                              style: const TextStyle(
-                                color: Colors.black,
+                              style: TextStyle(
+                                color: isDarkMode ? Colors.white : Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                                 height: 1.5,
                               ),
                             ),
                           ),
-                          const SizedBox(
-                              height: 5), // Adding space between texts
+                          const SizedBox(height: 5),
                           RichText(
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             text: TextSpan(
                               text: '${filteredNotes[index].content} \n',
-                              style: const TextStyle(
-                                color: Colors.black,
+                              style: TextStyle(
+                                color: isDarkMode ? Colors.white : Colors.black,
                                 fontWeight: FontWeight.normal,
                                 fontSize: 12,
                                 height: 1.5,
@@ -214,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                               fontSize: 8,
                               fontStyle: FontStyle.italic,
-                              color: Colors.grey.shade800),
+                              color: isDarkMode ? Colors.white : Colors.black),
                         ),
                       ),
                       trailing: IconButton(

@@ -8,7 +8,7 @@ import 'package:todo_note/screens/edit.dart';
 import 'package:todo_note/screens/settings.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Note> filteredNotes = [];
+  bool isDarkMode = false; // Added variable to track the mode
 
   @override
   void initState() {
@@ -50,59 +51,92 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void toggleTheme() {
+    setState(() {
+      isDarkMode = !isDarkMode;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 40, 16, 0),
         child: Column(children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Notes',
-                style: TextStyle(fontSize: 30, color: Colors.white),
+                style: TextStyle(
+                  fontSize: 30,
+                  color: isDarkMode ? Colors.white : Colors.grey.shade800,
+                ),
               ),
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            const SettingScreen(),
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: toggleTheme,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          isDarkMode ? Colors.white : Colors.grey.shade800,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
                       ),
-                    );
-                  },
-                  icon: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade800.withOpacity(.8),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: const Icon(
-                      Icons.settings,
-                      color: Colors.white,
+                      minimumSize: const Size(40, 40),
+                      padding: const EdgeInsets.all(0),
                     ),
-                  ))
+                    child: isDarkMode
+                        ? const Icon(Icons.light_mode)
+                        : const Icon(Icons.dark_mode),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const SettingScreen(),
+                        ),
+                      );
+                    },
+                    icon: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade800.withOpacity(.8),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: const Icon(
+                        Icons.settings,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
             child: TextField(
               onChanged: onSearchTextChanged,
-              cursorColor: Colors.grey.shade700,
+              cursorColor: isDarkMode ? Colors.white : Colors.grey.shade700,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(vertical: 12),
                 hintText: "Search Notes...",
-                hintStyle: const TextStyle(color: Colors.grey),
+                hintStyle: TextStyle(
+                    color: isDarkMode ? Colors.grey : Colors.grey.shade300),
                 prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                fillColor: Colors.white,
+                fillColor: isDarkMode ? Colors.white : Colors.grey.shade800,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
                   borderSide: BorderSide.none,
                 ),
+              ),
+              style: TextStyle(
+                color: isDarkMode ? Colors.black : Colors.white,
               ),
             ),
           ),
